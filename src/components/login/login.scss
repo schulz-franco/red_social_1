@@ -1,0 +1,138 @@
+div.loginContainer {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-items: center;
+    
+    form.loginForm {
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: min-content min-content min-content;
+        background-color: fff;
+        border-radius: 8px;
+        position: relative;
+        font-family: sans-serif;
+        background-color: #fff;
+        gap: 1.4rem;
+        
+        h2 {
+            padding: 1.4rem 0 1rem 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(153, 153, 153, 0.589);
+            color: #222;
+        }
+
+        div.inputs {
+            display: grid;
+            grid-template-columns: auto;
+            grid-auto-rows: min-content;
+            width: 300px;
+            padding: 0 2rem;
+            gap: 1.4rem;
+        }
+        
+        span.error {
+            background-color: rgba(255, 0, 0, 0.178);
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 0, 0, 0.377);
+            color: rgba(255, 0, 0, 0.733);
+            border-radius: 4px;
+            font-size: .9rem;
+        }
+
+        .form-control {
+            outline: none;
+            background: none;
+            border: none;
+            border-bottom: 2px solid lightgray;
+            font-size: 1rem;
+            color: rgb(153, 153, 153);
+            padding: 8px;
+        }
+
+        .form-control::placeholder {
+            color: rgb(153, 153, 153);
+        }
+    
+        input[type="submit"] {
+            padding: 10px;
+            background-color: rgb(15, 71, 255);
+            color: #fff;
+            font-weight: bold;
+            font-size: 1rem;
+            letter-spacing: .05rem;
+            border: none;
+            border-radius: 30px;
+            text-transform: capitalize;
+            cursor: pointer;
+        }
+
+        label:last-child {
+            font-size: 1rem;
+            color: rgb(138, 138, 138);
+            text-align: center;
+            padding: 0 0 1.4rem 0;
+        }
+    
+        button {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: rgb(15, 71, 255);
+            cursor: pointer;
+        }
+    
+        input#check {
+            display: none;
+        }
+    
+        @keyframes check {
+            0% {
+                opacity: 0;
+            } 
+    
+            100% {
+                opacity: 1;
+            }
+        }
+    
+        label[for="check"] {
+            position: relative;
+            margin-left: 16px;
+            padding-left: 6px;
+            text-transform: capitalize;
+            font-weight: normal;
+            font-size: .9rem;
+            font-family: sans-serif;
+            opacity: 0;
+            animation: check 300ms;
+            animation-fill-mode: forwards;
+            color: rgb(153, 153, 153);
+            cursor: pointer;
+            
+            &::after {
+                content: "";
+                box-shadow: inset 0 0 1px 2px rgba(0, 0, 0, 0.041);
+                transform: scale(.9);
+                position: absolute;
+                background-color: rgb(153, 153, 153);
+                border-radius: 50%;
+                cursor: pointer;
+                top: 0;
+                bottom: 0;
+                left: -16px;
+                right: 100%;
+                transition-duration: 200ms;
+            }
+        }
+    
+        label.checked {
+            &::after {
+                background-color: rgb(15, 71, 255);
+            }
+        }
+    }
+}
