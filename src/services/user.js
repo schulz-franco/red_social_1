@@ -78,3 +78,27 @@ export const uploadImage = async (email, imageFile) => {
     })
     return response
 }
+
+export const newPost = async (userId, username, userImage, content, imageFile) => {
+    let response
+    let myHeaders = new Headers();
+
+    let formdata = new FormData();
+    if (imageFile) formdata.append("image", imageFile, imageFile.name);
+    formdata.append("userId", userId);
+    formdata.append("username", username);
+    if (userImage) formdata.append("userImage", userImage);
+    if (content) formdata.append("content", content)
+
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formdata,
+        redirect: 'follow'
+    };
+
+    await fetch("http://localhost:3900/api/post/new", requestOptions).then(response => response.text()).then(result => {
+        response = JSON.parse(result)
+    })
+    return response
+}

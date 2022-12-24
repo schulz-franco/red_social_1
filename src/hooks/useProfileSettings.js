@@ -35,6 +35,7 @@ const useProfileSettings = (user, setUser) => {
     const setImage = (ev) => {
         let imagen = ev.target.files[0]
         ev.target.files = null
+        ev.target.value = ''
         
         if (imagen && (imagen.size / 1024 / 1024) < 2) {
             uploadImage(user.email, imagen).then(res => {

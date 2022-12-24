@@ -52,7 +52,7 @@ const useLogin = (user, setUser, setLogged) => {
                 setError({ value: false })
                 setUser(res)
                 setLogged(true)
-                if (user.firstTime === 0) {
+                if (res.firstTime === 0) {
                     navigate('/perfil/opciones')
                 } else {
                     navigate('/feed')
