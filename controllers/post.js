@@ -39,6 +39,13 @@ const controller = {
                 return res.status(200).send({ status: 'success', post })
             })
         })
+    },
+    get: (req, res) => {
+        let page = req.params.page
+        Post.find({}, null, { skip: parseInt(page * 10), limit: 10, sort: '-date' }, (error, docs) => {
+            if (error) return res.status(500).send({ status: 'error', message: 'Ocurrio un error o no existen documentos' })
+            return res.status(200).send({ status: 'success', docs })
+        })
     }
 }
 
