@@ -58,7 +58,7 @@ let controller = {
                     res.status(500).send({ status: 'error', message: 'Ocurrio un error' });
                 } else if (result) {
                     res.status(200).send({
-                        status: 'success',
+                        id: user._id,
                         username: user.username,
                         email: email.toLowerCase(),
                         name: user.name,

@@ -42,9 +42,66 @@ const controller = {
     },
     get: (req, res) => {
         let page = req.params.page
-        Post.find({}, null, { skip: parseInt(page * 10), limit: 10, sort: '-date' }, (error, docs) => {
+        Post.find({}, null, { skip: parseInt(page * 10), limit: 10, sort: { date: -1 } }, (error, docs) => {
             if (error) return res.status(500).send({ status: 'error', message: 'Ocurrio un error o no existen documentos' })
             return res.status(200).send({ status: 'success', docs })
+        })
+    },
+    like: (req, res) => {
+        let postId = req.params.postId
+        let userId = req.params.userId
+        User.findOne({ _id: userId }, (error, user) => {
+            if (error) {
+                return res.status(500).send({ status: 'error', message: 'Ocurrio un error o el usuario no es valido' })
+            }
+            Post.findOne({ _id: postId }, (err, doc) => {
+                if (err) {
+                    return res.status(500).send({ status: 'error', message: 'Ocurrio un error o el documento no es valido' })
+                }
+                let likeAction = true
+                if (doc.likes.length > 0) {
+                    for (let count = 0; count < doc.likes.length; count++) {
+                        if (doc.likes[count].id == userId) {
+                            likeAction = false
+                            doc.likes.splice(count, 1)
+                            break
+                        }
+                    }
+                }
+                if (likeAction) {
+                    doc.likes.push({
+                        id: userId,
+                        username: user.username,
+                        image: user.image
+                    })
+                }
+                doc.save(saveErr => {
+                    if (saveErr) {
+                        return res.status(500).send({ status: 'error', message: 'Ocurrio un error al guardar' })
+                    }
+                    return res.status(200).send({ status: 'success', action: likeAction })
+                })
+            })
+        })
+    },
+    comment: (req, res) => {
+        let params = req.params
+        User.findOne({ _id: params.userId }, (error, user) => {
+            if (error) return res.status(500).send({ status: 'error', message: 'Ocurrio un error o el usuario no es valido' })
+            Post.findOne({ _id: params.postId }, (err, doc) => {
+                if (err) return res.status(500).send({ status: 'error', message: 'Ocurrio un error o el documento no es valido' })
+                if (params.content.length == 0 || params.content.length > 600) return res.status(500).send({ status: 'error', message: 'El contenido no es valido' })
+                doc.comments.push({
+                    id: params.userId,
+                    username: user.username,
+                    image: user.image,
+                    content: params.content
+                })
+                doc.save(saveErr => {
+                    if (saveErr) return res.status(500).send({ status: 'error', message: 'Ocurrio un error al guardar' })
+                    return res.status(200).send({ status: 'success' })
+                })
+            })
         })
     }
 }

@@ -13,6 +13,7 @@ router.post('/new', User.new);
 router.post('/updateNames', User.updateNames);
 router.post('/upload', upload.single('image'), User.upload);
 router.post('/post/new', upload.single('image'), Post.new);
-router.get('/post/get/:page', Post.get);
+router.post('/post/like/:postId/:userId', Post.like);
+router.get('/post/get/:page/:id', Post.get);
 
 module.exports = router;
