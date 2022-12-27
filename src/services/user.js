@@ -132,3 +132,22 @@ export const likePost = async (userId, postId) => {
     })
     return response
 }
+
+export const commentPost = async (userId, postId, content)=> {
+    let response
+    let raw = JSON.stringify({
+        userId,
+        postId,
+        content
+    });
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+    await fetch("http://localhost:3900/api/post/comment", requestOptions).then(response => response.text()).then(result => {
+        response = JSON.parse(result)
+    })
+    return response
+}

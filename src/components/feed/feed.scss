@@ -288,20 +288,26 @@ div.feedContainer {
                     grid-auto-rows: min-content;
                     border-radius: 6px;
 
+                    form.sendComment {
+                        display: grid;
+                        position: relative;
+                        
+                        input {
+                            border: 1px solid lightgray;
+                            border-top: none;
+                            padding: 0.5rem 4rem .5rem 1rem;
+                            font-size: 1rem;
+                            outline: none;
+                            color: #222;
+                        }
+                    }
+
                     div.commentsContainer {
                         display: flex;
                         flex-direction: column;
-                        border-left: 1px solid lightgray;
-                        border-right: 1px solid lightgray;
-                        
-                        div.comment:last-child {
-                            border-bottom: 1px solid lightgray;
-                        }
-
-                        div.comment:nth-child(1) {
-                            border-top: 1px solid lightgray;
-                        }
-
+                        border: 1px solid #d3d3d3;
+                        overflow-y: auto;
+                        max-height: 200px;
 
                         div.comment {
                             display: flex;
@@ -311,7 +317,7 @@ div.feedContainer {
                                 display: flex;
                                 align-items: center;
                                 padding: 0.5rem 1rem;
-                                gap: 1rem;
+                                gap: .7rem;
                                 border-radius: 0;
             
                                 img {

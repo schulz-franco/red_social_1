@@ -8,7 +8,7 @@ import searchImg from "../../assets/search.png"
 import addImagePost from "../../assets/addImagePost.png"
 import { useRef } from "react"
 import { useState } from "react"
-import { newPost, getPost, likePost } from "../../services/user"
+import { newPost, getPost, likePost, commentPost } from "../../services/user"
 import { useEffect } from "react"
 
 const Option = ({ name, img }) => {
@@ -42,6 +42,7 @@ const Post = ({ myId, postId, userId, userImage, username, postImage, content, l
     const [length, setLength] = useState(likes.length)
     const [like, setLike] = useState(null)
     const [seeComments, setSeeComments] = useState(false)
+    const [myComments, setMyComments] = useState([])
 
     let liked = false
     for (let count = 0; count < likes.length; count++) {
@@ -71,6 +72,17 @@ const Post = ({ myId, postId, userId, userImage, username, postImage, content, l
         })
     }
 
+    const onCommentHandler = (ev)=> {
+        ev.preventDefault()
+        commentPost(myId, postId, ev.target[0].value).then(res => {
+            if (res.status !== 'error') {
+                console.log(res)
+                ev.target[0].value = ''
+                setMyComments([{ id: res.id, username: res.username, image: res.image, content: res.content }, ...myComments ])
+            }
+        })
+    }
+
     return(
         <div className="post">
             <div style={userStyle} className="userInfo">
@@ -83,12 +95,19 @@ const Post = ({ myId, postId, userId, userImage, username, postImage, content, l
                 {postImage && <img src={postImage} alt='Imagen' />}
                 {postImage && <div style={actionStyle} className="actions"><div onClick={onLikeHandler} className={ifLike}/>{length}<div onClick={onSeeCommentsHandler} className='comment'></div>{comments.length}</div>}
                 {seeComments && 
+                    <>
                     <div className="commentsContainer">
-                        <Comment postImage={postImage} userId='asdasdasdasd' username='adakos' image='' content="asdasdasdasda asdsad asdasd asd asd" />
-                        <Comment postImage={postImage} userId='asdasdasdasd' username='adakos' image='' content="asdasdasdasda asdsad asdasd asd asd" />
-                        <Comment postImage={postImage} userId='asdasdasdasd' username='adakos' image='' content="asdasdasdasda asdsad asdasd asd asd" />
-                        <Comment postImage={postImage} userId='asdasdasdasd' username='adakos' image='' content="asdasdasdasda asdsad asdasd asd asd" />
+                        {myComments && myComments.map(comment => {
+                            return <Comment postImage={postImage} userId={comment.id} username={comment.username} image={comment.image} content={comment.content} />
+                        })}
+                        {comments && comments.map(comment => {
+                            return <Comment postImage={postImage} userId={comment.id} username={comment.username} image={comment.image} content={comment.content} />
+                        })}
                     </div>
+                    <form onSubmit={(ev) => onCommentHandler(ev)} className="sendComment">
+                        <input maxLength={200} required type="text" placeholder="Agrega un comentario..." />
+                    </form>
+                    </>
                 }
                 {content && <p style={contentStyle}>{content}</p>}
             </div>
