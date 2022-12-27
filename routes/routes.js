@@ -12,8 +12,10 @@ router.post('/auth', User.auth);
 router.post('/new', User.new);
 router.post('/updateNames', User.updateNames);
 router.post('/upload', upload.single('image'), User.upload);
+
+router.get('/post/get/:page/:id', Post.get);
 router.post('/post/new', upload.single('image'), Post.new);
 router.post('/post/like/:postId/:userId', Post.like);
-router.get('/post/get/:page/:id', Post.get);
+router.post('/post/comment', Post.comment)
 
 module.exports = router;

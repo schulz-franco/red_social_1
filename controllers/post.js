@@ -85,21 +85,21 @@ const controller = {
         })
     },
     comment: (req, res) => {
-        let params = req.params
-        User.findOne({ _id: params.userId }, (error, user) => {
+        let body = req.body
+        User.findOne({ _id: body.userId }, (error, user) => {
             if (error) return res.status(500).send({ status: 'error', message: 'Ocurrio un error o el usuario no es valido' })
-            Post.findOne({ _id: params.postId }, (err, doc) => {
+            Post.findOne({ _id: body.postId }, (err, doc) => {
                 if (err) return res.status(500).send({ status: 'error', message: 'Ocurrio un error o el documento no es valido' })
-                if (params.content.length == 0 || params.content.length > 600) return res.status(500).send({ status: 'error', message: 'El contenido no es valido' })
+                if (body.content.length == 0 || body.content.length > 200) return res.status(500).send({ status: 'error', message: 'El contenido no es valido' })
                 doc.comments.push({
-                    id: params.userId,
+                    id: body.userId,
                     username: user.username,
                     image: user.image,
-                    content: params.content
+                    content: body.content
                 })
                 doc.save(saveErr => {
                     if (saveErr) return res.status(500).send({ status: 'error', message: 'Ocurrio un error al guardar' })
-                    return res.status(200).send({ status: 'success' })
+                    return res.status(200).send({ status: 'success', id: body.userId, username: user.username, image: user.image, content: body.content })
                 })
             })
         })
