@@ -8,13 +8,90 @@ import searchImg from "../../assets/search.png"
 import addImagePost from "../../assets/addImagePost.png"
 import { useRef } from "react"
 import { useState } from "react"
-import { newPost } from "../../services/user"
+import { newPost, getPost, likePost } from "../../services/user"
+import { useEffect } from "react"
 
 const Option = ({ name, img }) => {
     return(
         <div className="option">
-            <img width={16} height={16} src={img} alt={name} />
+            <img width={20} height={20} src={img} alt={name} />
             <span>{name}</span>
+        </div>
+    )
+}
+
+const Comment = ({ userId, username, image, content, postImage }) => {
+
+    let borderStyle = postImage ? {borderTop: 'none'} : {}
+
+    return (
+        <div style={borderStyle} className="comment">
+            <div id={userId} className="user">
+                <img width={20} height={20} src={image ? image : profileImg} alt={username} />
+                <h4>{username}</h4>
+            </div>
+            <div>
+                <p>{content}</p>
+            </div>
+        </div>
+    )
+}
+
+const Post = ({ myId, postId, userId, userImage, username, postImage, content, likes, comments }) => {
+
+    const [length, setLength] = useState(likes.length)
+    const [like, setLike] = useState(null)
+    const [seeComments, setSeeComments] = useState(false)
+
+    let liked = false
+    for (let count = 0; count < likes.length; count++) {
+        if (likes[count].id === myId) {
+            liked = true
+            break
+        }
+    }
+
+    let ifLike = (like === null) ? (liked ? "like liked" : 'like') : (like ? 'like liked' : 'like')
+    let contentStyle = (!postImage && !seeComments) ? {paddingTop: '.2rem'} : {}
+    let userStyle = !postImage ? {padding: '1rem'} : {}
+    let actionStyle = (postImage && !content) ? {borderBottom: '2px solid lightgray'} : {}
+
+    const onSeeCommentsHandler = ()=> setSeeComments(!seeComments)
+
+    const onLikeHandler = ()=> {
+        likePost(myId, postId).then(res => {
+            if (res.status !== 'error') {
+                setLike(res.action)
+                if (res.action) {
+                    setLength(length + 1)
+                } else {
+                    setLength(length - 1)
+                }
+            }
+        })
+    }
+
+    return(
+        <div className="post">
+            <div style={userStyle} className="userInfo">
+                <img width={36} height={36} className="profileImg" src={userImage ? userImage : profileImg} alt="" />
+                <h4 id={userId} >{username}</h4>
+                <span></span>
+                {!postImage && <div style={actionStyle} className="actions"><div onClick={onLikeHandler} className={ifLike}/>{length}<div onClick={onSeeCommentsHandler} className='comment'></div>{comments.length}</div>}
+            </div>
+            <div className="postContent">
+                {postImage && <img src={postImage} alt='Imagen' />}
+                {postImage && <div style={actionStyle} className="actions"><div onClick={onLikeHandler} className={ifLike}/>{length}<div onClick={onSeeCommentsHandler} className='comment'></div>{comments.length}</div>}
+                {seeComments && 
+                    <div className="commentsContainer">
+                        <Comment postImage={postImage} userId='asdasdasdasd' username='adakos' image='' content="asdasdasdasda asdsad asdasd asd asd" />
+                        <Comment postImage={postImage} userId='asdasdasdasd' username='adakos' image='' content="asdasdasdasda asdsad asdasd asd asd" />
+                        <Comment postImage={postImage} userId='asdasdasdasd' username='adakos' image='' content="asdasdasdasda asdsad asdasd asd asd" />
+                        <Comment postImage={postImage} userId='asdasdasdasd' username='adakos' image='' content="asdasdasdasda asdsad asdasd asd asd" />
+                    </div>
+                }
+                {content && <p style={contentStyle}>{content}</p>}
+            </div>
         </div>
     )
 }
@@ -24,7 +101,21 @@ const Feed = ({ user }) => {
     const [contentLength, setContentLength] = useState(0)
     const [error, setError] = useState({ value: false })
     const [loader, setLoader] = useState(false)
+    const [posteos, setPosteos] = useState([])
+    const [page, setPage] = useState(0)
+    const [update, setUpdate] = useState(false)
     const inputFileRef = useRef()
+
+    useEffect(()=> {
+        let unsub = ()=> {
+            getPost(page).then(res => {
+                if (res.status === 'success') {
+                    setPosteos(res.docs)
+                }
+            }) 
+        }
+        return unsub()
+    }, [page, update])
 
     const onInputFileHandler = ()=> {
         inputFileRef.current.click()
@@ -34,7 +125,7 @@ const Feed = ({ user }) => {
         setContentLength(ev.target.value.length)
     }
 
-    const onSubmitHandler = (ev)=> {
+    const onSubmitHandler = async (ev)=> {
         ev.preventDefault()
         let content = ev.target[0].value ? ev.target[0].value : '' 
         let image = ev.target[1].files[0] ? ev.target[1].files[0] : ''
@@ -48,11 +139,15 @@ const Feed = ({ user }) => {
         }
 
         setLoader(true)
-        newPost(user.id, user.username, user.image, content, image).then(res => {
+        await newPost(user.id, user.username, user.image, content, image).then(res => {
             if (res.status === 'error') {
                 setError({ value: true, message: res.message })
             } else {
                 setError({ value: false })
+                setContentLength(0)
+                setUpdate(!update)
+                ev.target[0].value = ''
+                console.log('post success')
             }
             setLoader(false)
         })
@@ -92,10 +187,16 @@ const Feed = ({ user }) => {
                                 <input ref={inputFileRef} accept="image/*" hidden type="file" name="image" id="image" />
                                 <span className="counter">{contentLength}/600</span>
                                 <span></span>
+                                {loader && <div className="loader"><div></div><div></div><div></div></div>}
                                 <img onClick={onInputFileHandler} width={20} height={20} src={addImagePost} alt="Subir imagen" />
                                 <input type="submit" value="Publicar" />
                             </div>
                         </form>
+                    </div>
+                    <div className="posteos">
+                        {posteos && posteos.map(doc => {
+                            return <Post key={doc._id} comments={doc.comments} myId={user.id} postId={doc._id} likes={doc.likes} userId={doc.owner.id} userImage={doc.owner.image ? doc.owner.image : ''} username={doc.owner.username} postImage={doc.image ? doc.image : ''} content={doc.content ? doc.content : ''} />
+                        })}
                     </div>
                 </div>
                 <div className="people">

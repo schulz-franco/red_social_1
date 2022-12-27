@@ -102,3 +102,33 @@ export const newPost = async (userId, username, userImage, content, imageFile) =
     })
     return response
 }
+
+export const getPost = async (page, userId) => {
+    let response
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    await fetch("http://localhost:3900/api/post/get/" + page + '/' + userId, requestOptions).then(response => response.text()).then(result => {
+        response = JSON.parse(result)
+    })
+    return response
+}
+
+export const likePost = async (userId, postId) => {
+    let response
+
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    await fetch("http://localhost:3900/api/post/like/" + postId + '/' + userId, requestOptions).then(response => response.text()).then(result => {
+        response = JSON.parse(result)
+    })
+    return response
+}
