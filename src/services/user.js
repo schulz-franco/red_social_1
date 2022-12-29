@@ -103,7 +103,7 @@ export const newPost = async (userId, username, userImage, content, imageFile) =
     return response
 }
 
-export const getPost = async (page, userId) => {
+export const getPost = async (page) => {
     let response
 
     let requestOptions = {
@@ -112,7 +112,7 @@ export const getPost = async (page, userId) => {
         redirect: 'follow'
     };
 
-    await fetch("http://localhost:3900/api/post/get/" + page + '/' + userId, requestOptions).then(response => response.text()).then(result => {
+    await fetch("http://localhost:3900/api/post/get/" + page, requestOptions).then(response => response.text()).then(result => {
         response = JSON.parse(result)
     })
     return response
@@ -147,6 +147,39 @@ export const commentPost = async (userId, postId, content)=> {
         redirect: 'follow'
     };
     await fetch("http://localhost:3900/api/post/comment", requestOptions).then(response => response.text()).then(result => {
+        response = JSON.parse(result)
+    })
+    return response
+}
+
+export const getUserPost = async (userId, page) => {
+    let response
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    await fetch("http://localhost:3900/api/post/user/get/" + userId + '/' + page, requestOptions).then(response => response.text()).then(result => {
+        response = JSON.parse(result)
+    })
+    return response
+}
+
+export const findPost = async (search, limit)=> {
+    let response
+    let raw = JSON.stringify({
+        search,
+        limit
+    });
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+    await fetch("http://localhost:3900/api/post/find", requestOptions).then(response => response.text()).then(result => {
         response = JSON.parse(result)
     })
     return response

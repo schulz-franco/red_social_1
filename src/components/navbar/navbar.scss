@@ -1,0 +1,82 @@
+div.feedNavbar {
+    position: relative;
+    z-index: 1;
+    background-color: #f1f2fb;
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.010);
+    border-right: 1px solid #e1e1ef;
+    background: rgb(241,242,251);
+    background: linear-gradient(180deg, rgba(241,242,251,1) 0%, rgba(224,225,233,1) 100%);
+
+    div.userInfo {
+        display: grid;
+        grid-template-columns: auto;
+        grid-auto-rows: min-content;
+        justify-items: center;
+        padding: 1.5rem 0 0 0;
+
+        img.profileImg {
+            filter: drop-shadow(0 .5rem 4px #26274b0a);
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        h4 {
+            text-transform: capitalize;
+            color: #26274b;
+            font-weight: bold;
+            font-family: sans-serif;
+            padding-top: 0.7rem;
+        }
+
+        p {
+            text-align: center;
+            color: #26274b;
+            font-family: sans-serif;
+            text-transform: capitalize;
+            font-size: 14px;
+        }
+    }
+
+    div.menu {
+        display: grid;
+        grid-template-columns: auto;
+        grid-auto-rows: min-content;
+        align-items: center;
+        padding: 1.5rem 2rem 0 2rem;
+        font-family: sans-serif;
+        color: #26274b;
+
+        span.title {
+            text-transform: uppercase;
+            font-size: .85rem;
+            letter-spacing: 1px;
+            padding-bottom: .7rem;
+        }
+
+        div.option {
+            display: grid;
+            grid-template-columns: min-content min-content;
+            grid-template-rows: min-content;
+            align-items: center;
+            gap: .7rem;
+            padding-bottom: .9rem;
+
+            a {
+                padding-top: 2px;
+                width: min-content;
+                font-weight: 600;
+                text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.062);
+                position: relative;
+                white-space: nowrap;
+                color: #26274b;
+                font-size: 1rem;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            a:hover {
+                color: #26274bc4;
+            }
+        }
+    }
+}

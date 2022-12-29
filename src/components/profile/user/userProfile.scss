@@ -1,0 +1,49 @@
+div.content {
+
+    div.user {
+        display: grid;
+        grid-template-columns: min-content auto;
+        grid-template-rows: min-content;
+        gap: 1rem;
+
+        img {
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        div.info {
+            display: flex;
+            flex-direction: column;
+            transform: translateY(.5rem);
+            gap: 0.3rem;
+            color: #26274b;
+            font-family: sans-serif;
+
+            h4 {
+                text-transform: capitalize;
+                font-weight: bold;
+                font-size: 1.2rem;
+            }
+            
+            span {
+                text-transform: capitalize;
+                font-size: 1rem;
+            }
+        }
+
+        div.count {
+            display: grid;
+            grid-column: 1/3;
+            grid-row: 2/3;
+            align-content: center;
+            justify-items: center;
+            border-radius: 6px;
+            border: 1px solid lightgray;
+            border-bottom: 2px solid lightgray;
+            text-transform: lowercase;
+            padding: .5rem;
+            color: #26274b;
+            font-family: sans-serif;
+        }
+    }
+}

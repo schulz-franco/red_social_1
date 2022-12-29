@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Feed from "./components/feed/Feed";
 import Login from "./components/login/Login"
 import ProfileSettings from "./components/profile/settings/ProfileSettings"
+import UserProfile from "./components/profile/user/UserProfile";
 
 function App() {
     
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/login" element={<Login user={user} setLogged={setLogged} setUser={setUser} />} />
                 <Route path="/perfil/opciones" element={<RutaProtegida><ProfileSettings setUser={setUser} user={user} /></RutaProtegida>} />
                 <Route path="/feed" element={<RutaProtegida><Feed user={user}/></RutaProtegida>} />
+                <Route path="/perfil" element={<RutaProtegida><UserProfile user={user}/></RutaProtegida>} />
             </Routes>
         </BrowserRouter>	
     );
