@@ -13,8 +13,7 @@ let PostSchema = new Schema({
     image: { type: String },
     likes: { type: Array, default: [] },
     comments: { type: Array, default: [] },
-    date: { type: Date, default: Date.now },
-    liked: { type: Boolean, default: false }
+    date: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Post', PostSchema)

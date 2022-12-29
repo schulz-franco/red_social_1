@@ -47,6 +47,31 @@ const controller = {
             return res.status(200).send({ status: 'success', docs })
         })
     },
+    getUser: (req, res) => {
+        let userId = req.params.userId
+        let page = req.params.page
+        Post.find({ "owner.id": userId }, null, { skip: parseInt(page * 10), limit: 10, sort: { date: -1 } }, (error, docs) => {
+            if (error) {
+                return res.status(500).send({ status: 'error', message: 'Ocurrio un error o no existen documentos' })
+            }
+            return res.status(200).send({ status: 'success', docs })
+        })
+    },
+    findPost: (req, res) => {
+        let search = req.body.search
+        let limit = parseInt(req.body.limit)
+        Post.find({ content: { $gte: search } }, (error, docs) => {
+            if (error) {
+                return res.status(500).send({ status: 'error', message: 'Ocurrio un error o no existen documentos' })
+            }
+            let result = []
+            for (let count = 0; count < docs.length; count++) {
+                if (docs[count].content.includes(search)) result.push(docs[count])
+                if (limit == 1 && count == 6) break
+            }
+            return res.status(200).send({ status: 'success', docs: result })
+        })
+    },
     like: (req, res) => {
         let postId = req.params.postId
         let userId = req.params.userId
