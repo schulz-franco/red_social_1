@@ -1,5 +1,6 @@
 import profileImg from "../../assets/profile.png"
 import usePost from "../../hooks/usePost"
+import { Link } from "react-router-dom"
 import "./post.scss"
 
 const Comment = ({ userId, username, image, content, postImage }) => {
@@ -37,7 +38,7 @@ export const Post = ({ myId, postId, userId, userImage, username, postImage, con
         <div className="post">
             <div style={userStyle} className="userInfo">
                 <img width={36} height={36} className="profileImg" src={userImage ? userImage : profileImg} alt="" />
-                <h4 id={userId} >{username}</h4>
+                <Link to={'/perfil/' + userId} id={userId}>{username}</Link>
                 <span></span>
                 {!postImage && <div className="actions"><div onClick={onLikeHandler} className={ifLike}/>{length}<div onClick={onSeeCommentsHandler} className='comment'></div>{comments.length}</div>}
             </div>

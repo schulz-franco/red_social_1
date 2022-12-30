@@ -33,6 +33,7 @@ const useProfileSettings = (user, setUser) => {
     }
 
     const setImage = (ev) => {
+        ev.preventDefault()
         let imagen = ev.target.files[0]
         ev.target.files = null
         ev.target.value = ''

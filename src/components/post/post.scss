@@ -109,12 +109,17 @@ div.feedContainer {
                             filter: drop-shadow(0 .5rem 4px #26274b0c);
                         }
     
-                        h4 {
+                        a {
                             text-transform: capitalize;
                             color: #26274b;
                             font-weight: bold;
                             font-family: sans-serif;
                             font-size: 1rem;
+                            text-decoration: none;
+
+                            &:hover {
+                                text-decoration: underline;
+                            }
                         }
 
                         div.actions {

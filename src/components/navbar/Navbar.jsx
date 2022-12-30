@@ -26,7 +26,7 @@ export const Navbar = ({ user })=> {
             <div className="menu">
                 <span className="title">Menu</span>
                 <Option route="/feed" name='Feed' img={homeImg} />
-                <Option route="/perfil" name='Perfil' img={profileIconImg} />
+                <Option route={"/perfil/" + user.id} name='Perfil' img={profileIconImg} />
                 <Option route="/perfil/opciones" name='Opciones' img={settingsImg} />
                 <Option route="/login" name='Cerrar sesión' img={logoutImg} />
             </div>

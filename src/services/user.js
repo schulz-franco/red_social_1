@@ -167,6 +167,21 @@ export const getUserPost = async (userId, page) => {
     return response
 }
 
+export const getUserInfo = async (userId) => {
+    let response
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    await fetch("http://localhost:3900/api/user/get/" + userId, requestOptions).then(response => response.text()).then(result => {
+        response = JSON.parse(result)
+    })
+    return response
+}
+
 export const findPost = async (search, limit)=> {
     let response
     let raw = JSON.stringify({
@@ -180,6 +195,21 @@ export const findPost = async (search, limit)=> {
         redirect: 'follow'
     };
     await fetch("http://localhost:3900/api/post/find", requestOptions).then(response => response.text()).then(result => {
+        response = JSON.parse(result)
+    })
+    return response
+}
+
+export const getOne = async (postId) => {
+    let response
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    await fetch("http://localhost:3900/api/post/one/get/" + postId, requestOptions).then(response => response.text()).then(result => {
         response = JSON.parse(result)
     })
     return response
