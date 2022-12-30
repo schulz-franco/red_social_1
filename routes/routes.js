@@ -12,8 +12,10 @@ router.post('/auth', User.auth);
 router.post('/new', User.new);
 router.post('/updateNames', User.updateNames);
 router.post('/upload', upload.single('image'), User.upload);
+router.get('/user/get/:userId', User.getUser)
 
 router.get('/post/get/:page', Post.get);
+router.get('/post/one/get/:postId', Post.getPost)
 router.get('/post/user/get/:userId/:page', Post.getUser);
 router.post('/post/find', Post.findPost);
 router.post('/post/new', upload.single('image'), Post.new);

@@ -72,6 +72,13 @@ const controller = {
             return res.status(200).send({ status: 'success', docs: result })
         })
     },
+    getPost: (req, res) => {
+        let postId = req.params.postId
+        Post.findOne({ _id: postId }, (error, doc) => {
+            if (error) return res.status(404).send({ status: 'error', message: 'Ocurrio un error o no existe el documento' })
+            return res.status(200).send({ status: 'success', doc })
+        })
+    },
     like: (req, res) => {
         let postId = req.params.postId
         let userId = req.params.userId

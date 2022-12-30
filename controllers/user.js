@@ -116,6 +116,13 @@ let controller = {
                 return res.status(200).send({ status: 'success', message: 'Imagen actualizada con exito', imagePath})
             })
         })
+    },
+    getUser: (req, res) => {
+        let userId = req.params.userId
+        User.findOne({ _id: userId }, (error, user) => {
+            if (error) return res.status(404).send({ status: 'error', message: 'La id del usuario no es valida' })
+            return res.status(200).send({ status: 'success', user })
+        })
     }
 }
 
